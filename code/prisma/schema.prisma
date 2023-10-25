@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String
+  senha    String
+  idNivel  String
+  isLogged Int    @default(0)
+  isMfa    Int    @default(0)
+
+  @@map("users")
+}
+
+model Nivel {
+  id        Int    @id @default(autoincrement())
+  descricao String
+
+  @@map("nivel")
+}
+
+model MFA {
+  id          Int      @id @default(autoincrement())
+  coMfa       String
+  dtExpiracao DateTime
+  isValid     Int      @default(0)
+  idUser      Int
+
+  @@map("mfa")
+}
+
+model enviosFisicos {
+  id          Int      @id @default(autoincrement())
+  idMvno      String
+  idCanal     String
+  numPedido   Int      @default(0)
+  produto     String
+  quantidade  Int
+  status      String
+  dtPedido    DateTime
+  dtEnvio     DateTime?
+  nome        String
+  endereco    String
+  numero      String
+  bairro      String
+  cidade      String
+  estado      String
+  codPostal   String
+  email       String
+  sku         String
+  item        String
+  codRastreio String
+  jsonIccid   Json
+
+  @@map("enviosFisicos")
+}
+
+model enviosVirtuais {
+  id          Int      @id @default(autoincrement())
+  idMvno      String
+  idCanal     DateTime
+  numPedido   Int      @default(0)
+  quantidade  Int
+  status      String
+  dtPedido    DateTime
+  dtEnvio     DateTime
+  nome        String
+  email       String
+  sku         String
+  item        String
+  codRastreio String
+  nuIccid     String
+
+  @@map("enviosVirtuais")
+}
+
+model canais {
+  idCanal Int    @id @default(autoincrement())
+  noCanal String
+
+  @@map("canais")
+}
+
+model mvno {
+  idMvno Int    @id @default(autoincrement())
+  noMvno String
+
+  @@map("mvno")
+}
